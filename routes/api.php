@@ -8,6 +8,7 @@ use App\Http\Controllers\ApiStatusController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Resource\CustomerController;
 use App\Http\Controllers\Resource\VendorController;
+use App\Http\Controllers\Resource\VendorCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,4 +68,13 @@ Route::prefix('vendors')->group(function () {
     Route::post('/', [VendorController::class, 'register_vendor']);
     Route::put('/{id}', [VendorController::class, 'update_vendor']);
     Route::delete('/{id}', [VendorController::class, 'delete_vendor']);
+});
+
+Route::prefix('categories')->group(function () {
+    Route::get('/', [VendorCategoryController::class, 'all_categories']); // Get all categories
+    Route::get('/{id}', [VendorCategoryController::class, 'show_category']); // Get a specific category by ID
+    Route::put('/{id}', [VendorCategoryController::class, 'update_category']); // Update a category by ID
+    Route::delete('/{id}', [VendorCategoryController::class, 'delete_category']); // Delete a category by ID
+    Route::post('/', [VendorCategoryController::class, 'create_category']); // Create a new category
+
 });
