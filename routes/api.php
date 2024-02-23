@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ApiStatusController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Resource\CustomerController;
+use App\Http\Controllers\Resource\VendorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +51,20 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
 
 // Login route
 Route::post('/login', [LoginController::class, 'login']);
+
+
+Route::prefix('customers')->group(function () {
+    Route::get('/', [CustomerController::class, 'list_customers']);
+    Route::get('/{id}', [CustomerController::class, 'show_customer']);
+    Route::post('/', [CustomerController::class, 'register_customer']);
+    Route::put('/{id}', [CustomerController::class, 'update_customer']);
+    Route::delete('/{id}', [CustomerController::class, 'delete_customer']);
+});
+
+Route::prefix('vendors')->group(function () {
+    Route::get('/', [VendorController::class, 'list_vendors']);
+    Route::get('/{id}', [VendorController::class, 'show_vendor']);
+    Route::post('/', [VendorController::class, 'register_vendor']);
+    Route::put('/{id}', [VendorController::class, 'update_vendor']);
+    Route::delete('/{id}', [VendorController::class, 'delete_vendor']);
+});

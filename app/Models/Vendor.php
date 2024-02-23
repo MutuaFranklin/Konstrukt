@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Vendor extends User
 {
     protected $table = 'vendors';
-    protected $primaryKey = 'vendor_id';
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $fillable = ['company_name', 'company_address', 'category_id'];
 

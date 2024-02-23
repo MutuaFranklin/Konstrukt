@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends User
 {
     protected $table = 'customers';
-    protected $primaryKey = 'customer_id';
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $fillable = ['shipping_address', 'loyalty_points'];
 
@@ -16,5 +16,10 @@ class Customer extends User
     public function orders()
     {
         return $this->hasMany(Order::class, 'customer_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
