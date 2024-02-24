@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -36,7 +37,10 @@ class LoginController extends Controller
                 return response()->json(['status' => 'error', 'message' => 'Email not verified.'], 401);
             }
 
-            return response()->json(['status' => 'success', 'message' => 'Login successful.', 'user' => $user]);
+            // Generate JWT token
+            $token = JWTAuth::fromUser($user);
+
+            return response()->json(['status' => 'success', 'message' => 'Login successful.', 'user' => $user, 'token' => $token]);
         }
 
         // Return error if login attempt fails

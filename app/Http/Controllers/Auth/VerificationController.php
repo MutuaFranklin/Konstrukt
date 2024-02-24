@@ -30,12 +30,14 @@ class VerificationController extends Controller
             event(new Verified($user));
             // If the user is verified, create a customer
             $this->createCustomer($user);
+
         }
+
 
         return response()->json(['status' => 'success', 'message' => 'Email verified successfully'], 200);
     }
 
-    // The createCustomer method was missing the type declaration for the $user parameter
+    // The createCustomer method
     protected function createCustomer($user)
     {
         // Create a customer record for the newly verified user
@@ -43,6 +45,18 @@ class VerificationController extends Controller
         $customer->user_id = $user->id;
         $customer->save();
     }
+
+     // The createCustomer method
+     protected function createVendor($user)
+     {
+        // Create the vendor
+        $vendor = new Vendor();
+        $vendor->user_id = $user->id;
+        $vendor->company_name = $request->input('company_name');
+        $vendor->company_address = $request->input('company_address');
+        $vendor->category_id = $request->input('category_id');
+        $vendor->save();
+     }
 
     public function resend(Request $request)
     {

@@ -40,18 +40,9 @@ class RegisterController extends Controller
         // Dispatch email verification notification
         $user->sendEmailVerificationNotification();
 
-    
+
         // Return JSON response with success message
         return response()->json(['status' => 'success', 'message' => 'Registration successful! Please verify your email.']);
     }
 
-
-    # Create a customer record for the given user.
-    protected function createCustomer(User $user)
-    {
-        // Create a customer record for the newly registered user
-        Customer::create([
-            'user_id' => $user->id,
-        ]);
-    }
 }
