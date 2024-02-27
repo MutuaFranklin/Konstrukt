@@ -8,6 +8,8 @@ use App\Http\Controllers\Resource\CustomerController;
 use App\Http\Controllers\Resource\VendorController;
 use App\Http\Controllers\Resource\VendorCategoryController;
 use App\Http\Controllers\Resource\ProductController;
+use App\Http\Controllers\Resource\OrderController;
+
 use Illuminate\Support\Facades\Route;
 
 // Status
@@ -70,6 +72,14 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         Route::get('/{id}', [ProductController::class, 'show_product']);
         Route::put('/{id}', [ProductController::class, 'update_product']);
         Route::delete('/{id}', [ProductController::class, 'delete_product']);
+    });
+    //Orders
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'all_orders']);
+        Route::post('/', [OrderController::class, 'create_new_order']);
+        Route::get('/{id}', [OrderController::class, 'show_order']);
+        Route::put('/{id}', [OrderController::class, 'update_order']);
+        Route::delete('/{id}', [OrderController::class, 'delete_order']);
     });
 });
 
