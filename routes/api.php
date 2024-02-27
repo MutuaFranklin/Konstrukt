@@ -9,6 +9,8 @@ use App\Http\Controllers\Resource\VendorController;
 use App\Http\Controllers\Resource\VendorCategoryController;
 use App\Http\Controllers\Resource\ProductController;
 use App\Http\Controllers\Resource\OrderController;
+use App\Http\Controllers\Auth\SocialAuthenticationController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -30,11 +32,12 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])
 Route::post('/login', [LoginController::class, 'login']);
 
 // Google and Microsoft Authentication Routes
-Route::prefix('auth')->group(function () {
-    Route::get('/google', [LoginController::class, 'redirectToGoogle']);
-    Route::get('/google/callback', [LoginController::class, 'handleGoogleCallback']);
-    Route::get('/microsoft', [LoginController::class, 'redirectToMicrosoft']);
-    Route::get('/microsoft/callback', [LoginController::class, 'handleMicrosoftCallback']);
+Route::group(['prefix' => 'auth'], function () {
+    Route::get('/google', [SocialAuthenticationController::class, 'redirectToGoogle'])->name('google.login');
+    Route::get('/google/callback', [SocialAuthenticationController::class, 'handleGoogleCallback']);
+
+    Route::get('/microsoft', [SocialAuthenticationController::class, 'redirectToMicrosoft'])->name('microsoft.login');
+    Route::get('/microsoft/callback', [SocialAuthenticationController::class, 'handleMicrosoftCallback']);
 });
 
 Route::group(['middleware' => 'jwt.auth'], function () {
