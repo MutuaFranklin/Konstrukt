@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiStatusController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Resource\CustomerController;
 use App\Http\Controllers\Resource\VendorController;
-use App\Http\Controllers\Resource\VendorCategoryController;
+use App\Http\Controllers\Resource\ProductCategoryController;
 use App\Http\Controllers\Resource\ProductController;
 use App\Http\Controllers\Resource\OrderController;
 use App\Http\Controllers\Auth\SocialAuthenticationController;
@@ -59,13 +59,13 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         Route::delete('/{id}', [VendorController::class, 'delete_vendor']);
     });
 
-    // Vendor Categories
+    // Product Categories
     Route::prefix('categories')->group(function () {
-        Route::get('/', [VendorCategoryController::class, 'all_categories']);
-        Route::get('/{id}', [VendorCategoryController::class, 'show_category']);
-        Route::put('/{id}', [VendorCategoryController::class, 'update_category']);
-        Route::delete('/{id}', [VendorCategoryController::class, 'delete_category']);
-        Route::post('/', [VendorCategoryController::class, 'create_category']);
+        Route::get('/', [ProductCategoryController::class, 'all_categories']);
+        Route::get('/{id}', [ProductCategoryController::class, 'show_category']);
+        Route::put('/{id}', [ProductCategoryController::class, 'update_category']);
+        Route::delete('/{id}', [ProductCategoryController::class, 'delete_category']);
+        Route::post('/', [ProductCategoryController::class, 'create_category']);
     });
 
     // Product Routes

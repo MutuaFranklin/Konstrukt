@@ -7,6 +7,38 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 
+/**
+ * @OA\Get(
+ *     path="/api/auth/{provider}/callback",
+ *     summary="Handle authentication callback from social provider",
+ *     @OA\Parameter(
+ *         name="provider",
+ *         in="path",
+ *         required=true,
+ *         description="Social provider (e.g., google)",
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Login successful or user registered successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="success"),
+ *             @OA\Property(property="message", type="string", example="Login successful."),
+ *             @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
+ *             @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmxvY2FsaG9zdCIsImlhdCI6MTY0Mjk3MzExMiwiZXhwIjoxNjQyOTc2NzEyLCJuYmYiOjE2NDI5NzMxMTIsImp0aSI6IkN0bVBUUWlFbTh1Z3RiNkQiLCJzdWIiOjQ5LCJwcnYiOiI0Y2I4ZjBiYzU0MjQyYmE2NzM5N2UyODdjZDUxYmZjZmM3NzFiMjU0In0.5LxPvHZtq9Wji3pHwNN2cruKwNgrAJMjg2D2U8wct8I")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Failed to authenticate",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="error"),
+ *             @OA\Property(property="message", type="string", example="Failed to authenticate.")
+ *         )
+ *     )
+ * )
+ */
+
 class SocialAuthenticationController extends Controller
 {
     public function handleProviderCallback($provider)

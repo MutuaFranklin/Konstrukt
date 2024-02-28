@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Resource;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\VendorCategory;
+use App\Models\ProductCategory;
 
-class VendorCategoryController extends Controller
+class ProductCategoryController extends Controller
 {
     public function all_categories()
     {
-        $categories = VendorCategory::all();
+        $categories = ProductCategory::all();
         return response()->json(['categories' => $categories], 200);
     }
 
     public function show_category($id)
     {
-        $category = VendorCategory::find($id);
+        $category = ProductCategory::find($id);
 
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
@@ -28,32 +28,49 @@ class VendorCategoryController extends Controller
     public function create_category(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|unique:vendor_categories,name',
+            'name' => 'required|string|unique:product_categories,name',
         ]);
 
-        $category = VendorCategory::create([
+        $category = ProductCategory::create([
             'name' => $request->input('name'),
         ]);
 
         return response()->json(['message' => 'Category created successfully', 'category' => $category], 201);
     }
 
-    public function update_category(Request $request, $id)
-    {
-        $category = VendorCategory::find($id);
+  public function update_category(Request $request, $id)
+{
+    try {
+        $category = ProductCategory::findOrFail($id);
 
-        if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            // Add more validation rules as needed
+        ]);
+
+        // Check if the request fails validation
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        // Update the category
         $category->update($request->all());
 
         return response()->json(['message' => 'Category updated successfully', 'category' => $category], 200);
+    } catch (\Exception $e) {
+        // Log the exception for further investigation
+        Log::error('Error updating category: ' . $e->getMessage());
+
+        // Return a generic error message
+        return response()->json(['message' => 'An error occurred while updating the category'], 500);
     }
+}
+
 
     public function delete_category($id)
     {
-        $category = VendorCategory::find($id);
+        $category = ProductCategory::find($id);
 
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);

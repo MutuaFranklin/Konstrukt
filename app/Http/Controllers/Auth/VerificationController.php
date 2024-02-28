@@ -12,6 +12,44 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Customer;
 
+
+/**
+ * @OA\Post(
+ *     path="/api/email/verify/{id}/{hash}",
+ *     summary="Verify user's email",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="User ID",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="hash",
+ *         in="path",
+ *         required=true,
+ *         description="Verification hash",
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Email verified successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="success"),
+ *             @OA\Property(property="message", type="string", example="Email verified successfully")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid verification link or email already verified",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="error"),
+ *             @OA\Property(property="message", type="string", example="Invalid verification link or email already verified")
+ *         )
+ *     )
+ * )
+ */
+
 class VerificationController extends Controller
 {
     public function verify(Request $request, $userId, $hash)

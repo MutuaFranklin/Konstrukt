@@ -5,14 +5,35 @@ namespace App\Http\Controllers\Resource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductCategory;
+
 
 class ProductController extends Controller
 {
     // Get all products
     public function list_products()
     {
-        $products = Product::with('vendor')->get();
-        return response()->json(['status' => 'success', 'data' => $products]);
+        $products = Product::with(['vendor', 'productCategory'])->get();
+
+        // Map each product to the desired format
+        $productsWithData = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'price' => $product->price,
+                'stock_quantity' => $product->stock_quantity,
+                'product_category' => $product->productCategory?->name,
+                'vendor_name' => $product->vendor->company_name,
+            ];
+        });
+        $responseData = [
+            'status' => 'success',
+            'data' => $productsWithData
+        ];
+
+        // Return JSON response containing all product data
+        return response()->json($responseData);
     }
 
     // Create a new product
@@ -24,7 +45,8 @@ class ProductController extends Controller
                 'description' => 'required',
                 'price' => 'required|numeric',
                 'vendor_id' => 'required|exists:vendors,id',
-                'stock_quantity' => 'required|integer'
+                'stock_quantity' => 'required|integer',
+                'product_category_id' => 'sometimes|required|exists:product_categories,id',
             ]);
 
             $product = Product::create($request->all());
@@ -53,11 +75,12 @@ class ProductController extends Controller
                 'name' => 'sometimes|required',
                 'description' => 'sometimes|required',
                 'price' => 'sometimes|required|numeric',
+                'stock_quantity' => 'sometimes|required|integer',
                 'vendor_id' => 'sometimes|required|exists:vendors,id',
-                'stock_quantity' => 'sometimes|required|integer'
+                'product_category_id' => 'sometimes|required|exists:product_categories,id',
             ]);
 
-            $updateData = array_filter($request->only(['name', 'description', 'price', 'vendor_id', 'stock_quantity']));
+            $updateData = array_filter($request->only(['name', 'description', 'price', 'vendor_id', 'stock_quantity', 'product_category_id']));
 
             $product->update($updateData);
             return response()->json(['status' => 'success', 'data' => $product], 200);

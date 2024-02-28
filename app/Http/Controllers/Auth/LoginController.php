@@ -8,6 +8,39 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+/**
+ * @OA\Post(
+ *     path="/api/login",
+ *     summary="Handle a login request",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"email", "password"},
+ *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com", description="User's email address"),
+ *             @OA\Property(property="password", type="string", format="password", example="password123", description="User's password")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Login successful",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="success"),
+ *             @OA\Property(property="message", type="string", example="Login successful."),
+ *             @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
+ *             @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmxvY2FsaG9zdCIsImlhdCI6MTY0Mjk3MzExMiwiZXhwIjoxNjQyOTc2NzEyLCJuYmYiOjE2NDI5NzMxMTIsImp0aSI6IkN0bVBUUWlFbTh1Z3RiNkQiLCJzdWIiOjQ5LCJwcnYiOiI0Y2I4ZjBiYzU0MjQyYmE2NzM5N2UyODdjZDUxYmZjZmM3NzFiMjU0In0.5LxPvHZtq9Wji3pHwNN2cruKwNgrAJMjg2D2U8wct8I")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Invalid credentials or email not verified",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="error"),
+ *             @OA\Property(property="message", type="string", example="Invalid credentials or email not verified.")
+ *         )
+ *     )
+ * )
+ */
+
 class LoginController extends Controller
 {
     # Handle a login request to the application.

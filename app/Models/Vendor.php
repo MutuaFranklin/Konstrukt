@@ -10,12 +10,8 @@ class Vendor extends User
     protected $table = 'vendors';
     protected $primaryKey = 'id';
     public $incrementing = false;
-    protected $fillable = ['company_name', 'company_address', 'category_id'];
+    protected $fillable = ['company_name', 'company_address'];
 
-    public function category()
-    {
-        return $this->belongsTo(VendorCategory::class, 'category_id');
-    }
 
     public function products()
     {

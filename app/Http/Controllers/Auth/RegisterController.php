@@ -10,6 +10,41 @@ use Illuminate\Auth\Events\Registered;
 use App\Models\User;
 use App\Models\Customer;
 
+/**
+ * @OA\Post(
+ *     path="/api/register",
+ *     summary="Register a new user",
+ *     tags={"Authentication"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"first_name", "last_name", "email", "password"},
+ *             @OA\Property(property="first_name", type="string"),
+ *             @OA\Property(property="last_name", type="string"),
+ *             @OA\Property(property="email", type="string", format="email"),
+ *             @OA\Property(property="password", type="string", format="password")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="User registered successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="success"),
+ *             @OA\Property(property="message", type="string", example="Registration successful! Please verify your email.")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Validation errors",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="error"),
+ *             @OA\Property(property="message", type="object", example={"email":["The email field is required."]})
+ *         )
+ *     )
+ * )
+ */
+
+
 
 class RegisterController extends Controller
 {

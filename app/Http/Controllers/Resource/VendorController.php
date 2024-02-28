@@ -30,7 +30,6 @@ class VendorController extends Controller
                 ],
                 'company_name' => $vendor->company_name,
                 'company_address' => $vendor->company_address,
-                'category_name' => $vendor->category->name
             ];
         });
 
@@ -57,7 +56,6 @@ class VendorController extends Controller
                 ],
                 'company_name' => $vendor->company_name,
                 'company_address' => $vendor->company_address,
-                'category_id' => $vendor->category_id
             ]
         ];
 
@@ -80,7 +78,6 @@ class VendorController extends Controller
                 'password' => 'required|string|min:8|confirmed',
                 'company_name' => 'required|string|max:255',
                 'company_address' => 'required|string|max:255',
-                'category_id' => 'required|integer|exists:vendor_categories,id',
             ]);
             if ($validator->fails()) {
                 return response()->json(['status' => 'error', 'message' => $validator->errors()], 400);
@@ -109,7 +106,6 @@ class VendorController extends Controller
                  $validator = Validator::make($request->only(['company_name', 'company_address', 'category_id']), [
                     'company_name' => 'required|string|max:255',
                     'company_address' => 'required|string|max:255',
-                    'category_id' => 'required|integer|exists:vendor_categories,id',
                 ]);
 
                 // Create the vendor with the user ID
@@ -117,7 +113,6 @@ class VendorController extends Controller
                 $vendor->user_id = $user->id;  // Assign the user_id
                 $vendor->company_name = $request->input('company_name');
                 $vendor->company_address = $request->input('company_address');
-                $vendor->category_id = $request->input('category_id');
                 $vendor->save();
                 if ($validator->fails()) {
                     return response()->json(['status' => 'error', 'message' => $validator->errors()], 400);
