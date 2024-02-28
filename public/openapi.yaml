@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: Konstrukt API Documentation
+  description: This API documentation provides details about the endpoints available in the Konstrukt system.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api  # Adjust URL according to your server setup
+paths:
+  /status:
+    get:
+      summary: Get API Status
+      responses:
+        '200':
+          description: OK
+  /register:
+    post:
+      summary: Register a new user
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+  /email/verify/{id}/{hash}:
+    get:
+      summary: Verify user's email address
+      responses:
+        '200':
+          description: Email verified successfully
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: string
+        - name: hash
+          in: path
+          required: true
+          description: Verification hash
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+  /email/resend:
+    post:
+      summary: Resend email verification notification
+      responses:
+        '200':
+          description: Email verification notification resent
+      security:
+        - bearerAuth: []
+  /login:
+    post:
+      summary: Login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+  /auth/google:
+    get:
+      summary: Redirect to Google for authentication
+      responses:
+        '302':
+          description: Redirect to Google authentication page
+  /auth/google/callback:
+    get:
+      summary: Callback endpoint for Google authentication
+      responses:
+        '302':
+          description: Redirect to the application after Google authentication
+  /auth/microsoft:
+    get:
+      summary: Redirect to Microsoft for authentication
+      responses:
+        '302':
+          description: Redirect to Microsoft authentication page
+  /auth/microsoft/callback:
+    get:
+      summary: Callback endpoint for Microsoft authentication
+      responses:
+        '302':
+          description: Redirect to the application after Microsoft authentication
+  /customers:
+    get:
+      summary: Get all customers
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /customers/{id}:
+    get:
+      summary: Get customer details by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Customer ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /vendors:
+    get:
+      summary: Get all vendors
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /vendors/{id}:
+    get:
+      summary: Get vendor details by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Vendor ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /categories:
+    get:
+      summary: Get all product categories
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /categories/{id}:
+    get:
+      summary: Get product category by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Category ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /products:
+    get:
+      summary: Get all products
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /products/{id}:
+    get:
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Product ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /orders:
+    get:
+      summary: Get all orders
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /orders/{id}:
+    get:
+      summary: Get order by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Order ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    UserRegistration:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - email
+        - password
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        expires_at:
+          type: string

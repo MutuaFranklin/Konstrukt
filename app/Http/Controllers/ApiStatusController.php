@@ -22,12 +22,12 @@ class ApiStatusController extends Controller
         try {
             // Attempt to authenticate the user using the JWT token
             if ($user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['status' => 'success', 'message' => 'User is authenticated.']);
+                return response()->json(['status' => 'success', 'message' => 'User is authenticated.'], 200);
             } else {
-                return response()->json(['status' => 'error', 'message' => 'User is not authenticated.'], 401);
+                return response()->json(['status' => '', 'message' => 'User is not authenticated.'], 401);
             }
         } catch (JWTException $e) {
-            return response()->json(['status' => 'error', 'message' => 'Failed to authenticate token.'], 500);
+            return response()->json(['status' => 'error', 'message' => 'The API is up and running, but lacks authentication.'], 401);
         }
 
     }

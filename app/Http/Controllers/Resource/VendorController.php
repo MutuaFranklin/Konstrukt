@@ -36,6 +36,8 @@ class VendorController extends Controller
         return response()->json(['status' => 'success', 'data' => $vendorsWithUserData]);
     }
 
+
+
     public function show_vendor($id)
     {
         $vendor = Vendor::with('user')->find($id);
